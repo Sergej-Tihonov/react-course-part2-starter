@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import usePosts from "../hooks/usePosts";
 
 const PostList = () => {
+  const pageSize = 10
+  const [page, setPage] = useState<number>(1)
   const [userId, setUserId] = useState<number | null>(null)
-  const {data:posts, error, isLoading} = usePosts(userId);
+  const {data:posts, error, isLoading} = usePosts({userId, page, pageSize});
 
   if (isLoading) return <p>Loading...</p>
 
@@ -28,6 +30,19 @@ const PostList = () => {
           </li>
         ))}
       </ul>
+      <button
+        onClick={() => setPage(page - 1)}
+        disabled={page <= 1}
+        className="btn btn-primary my-3"
+      >
+        Previous
+      </button>
+      <button
+        onClick={() => setPage(page + 1)}
+        className="btn btn-primary my-3 ms-1"
+      >
+        Next
+      </button>
     </>
   );
 };
