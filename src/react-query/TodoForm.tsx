@@ -12,6 +12,7 @@ const TodoForm = () => {
         .then(res => res.data),
     onSuccess: (savedTodo, newTodo) => {
       queryClient.setQueryData<Todo[]>(['todos'], (oldTodos) => [savedTodo, ...(oldTodos || [])])
+      ref.current!.value = '';
     }
   })
   const ref = useRef<HTMLInputElement>(null);
@@ -33,7 +34,12 @@ const TodoForm = () => {
           <input ref={ref} type="text" className="form-control" />
         </div>
         <div className="col">
-          <button className="btn btn-primary">Add</button>
+          <button
+            disabled={addTodo.isPending}
+            className="btn btn-primary"
+          >
+            {addTodo.isPending ? 'Adding...' : 'Add'}
+          </button>
         </div>
       </form>
     </>
